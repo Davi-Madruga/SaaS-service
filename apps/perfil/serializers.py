@@ -4,7 +4,7 @@ from django.db import transaction
 from django.contrib.auth import get_user_model
 User = get_user_model()
 
-class RegistroSerializer(serializers.Serializer):
+class CadastroClienteSerializer(serializers.Serializer):
     nome = serializers.CharField()
     telefone = serializers.CharField()
     email = serializers.EmailField()
@@ -15,7 +15,7 @@ class RegistroSerializer(serializers.Serializer):
 
         if User.objects.filter(email=email).exists():
             raise serializers.ValidationError("Não foi possível realizar o cadastro")
-        
+
         return email
     
     @transaction.atomic
