@@ -4,6 +4,15 @@ from django.db import transaction
 from django.contrib.auth import get_user_model
 User = get_user_model()
 
+class PerfilSerializer(serializers.ModelSerializer):
+    email = serializers.EmailField(source="user.email", read_only=True)
+
+    class Meta:
+
+        model = Perfil
+        fields = ["id","nome","telefone","tipo","email"]
+        read_only_fields = ["id", "email", "tipo"]
+
 class CadastroClienteSerializer(serializers.Serializer):
     nome = serializers.CharField()
     telefone = serializers.CharField()
