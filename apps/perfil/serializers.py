@@ -1,5 +1,5 @@
-from rest_framework import serializers
 from .models import Perfil
+from rest_framework import serializers
 from django.db import transaction
 from django.contrib.auth import get_user_model
 User = get_user_model()
@@ -26,7 +26,7 @@ class CadastroClienteSerializer(serializers.Serializer):
             raise serializers.ValidationError("Não foi possível realizar o cadastro")
 
         return email
-    
+
     @transaction.atomic
     def create(self, validated_data):
         user = User.objects.create_user(
@@ -40,7 +40,7 @@ class CadastroClienteSerializer(serializers.Serializer):
             telefone = validated_data['telefone'],
             tipo = 'cliente'
         )
-        
+
         return {
             'id': perfil.id,
             'nome': perfil.nome,

@@ -1,13 +1,13 @@
-from django.db import models
 from django.contrib.auth.models import AbstractUser, BaseUserManager
+from django.db import models
 
 class UsuarioManager(BaseUserManager):
     def create_user(self, email, password=None, **extra_fields):
         if not email:
             raise ValueError("O email é obrigatório")
-        
+
         email = self.normalize_email(email)
-        
+
         user = self.model(
             email=email,
             **extra_fields
@@ -16,7 +16,7 @@ class UsuarioManager(BaseUserManager):
         user.save(using=self._db)
 
         return user
-    
+
     def create_superuser(self, email, password=None, **extra_fields):
         extra_fields.setdefault("is_staff", True)
         extra_fields.setdefault("is_superuser", True)

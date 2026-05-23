@@ -1,8 +1,8 @@
 from rest_framework import viewsets
-from .models import Servico
-from .serializers import ServicoSerializer
 from rest_framework.permissions import IsAuthenticated, SAFE_METHODS
+from .serializers import ServicoSerializer
 from .permissions import IsAdmin
+from .models import Servico
 
 class ServicoViewSet(viewsets.ModelViewSet):
     queryset = Servico.objects.all()
