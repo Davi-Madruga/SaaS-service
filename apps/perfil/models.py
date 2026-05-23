@@ -1,5 +1,13 @@
 from django.db import models
-from django.contrib.auth.models import User
+from django.contrib.auth.models import AbstractUser
+
+
+class Usuario(AbstractUser):
+    username = None
+    email = models.EmailField(unique=True)
+
+    USERNAME_FIELD = 'email'
+    REQUIRED_FIELDS = []
 
 class Perfil(models.Model):
     TIPOS = [
@@ -8,7 +16,7 @@ class Perfil(models.Model):
         ('cliente','Cliente')
     ]
 
-    user = models.OneToOneField(User, on_delete=models.CASCADE, related_name='perfil')
+    user = models.OneToOneField(Usuario, on_delete=models.CASCADE, related_name='perfil')
     nome = models.CharField(max_length=120, verbose_name='Nome')
     telefone = models.CharField(max_length=20, verbose_name='Telefone')
     tipo = models.CharField(max_length=20,default='cliente', choices=TIPOS, verbose_name='Tipo do Perfil')
