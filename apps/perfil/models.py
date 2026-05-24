@@ -1,5 +1,6 @@
 from django.contrib.auth.models import AbstractUser, BaseUserManager
 from django.db import models
+from django.db import transaction
 
 class UsuarioManager(BaseUserManager):
     def create_user(self, email, password=None, **extra_fields):
@@ -27,8 +28,21 @@ class UsuarioManager(BaseUserManager):
 
         if extra_fields.get("is_superuser") is not True:
             raise ValueError("Superuser precisa ter is_superuser=True")
-
-        return self.create_user(email, password, **extra_fields)
+        
+        with transaction.atomic():
+            user = self.create_user(email, password, **extra_fields)
+            count = Perfil.objects.filter(tipo="admin").count() + 1
+            
+            Perfil.objects.get_or_create(
+                user=user,
+                defaults={
+                    "nome": f"Administrador{count}",
+                    "telefone": "000000000",
+                    "tipo": "admin",
+                }
+            )   
+            
+        return user
 
 class Usuario(AbstractUser):
     username = None
