@@ -1,14 +1,18 @@
 from rest_framework.permissions import BasePermission
 
 class IsAdmin(BasePermission):
+    message = "Apenas administradores podem acessar este recurso."
+
     def has_permission(self, request, view):
-        if not request.user.is_authenticated:
+        user = request.user
+
+        if not user or not user.is_authenticated:
             return False
 
-        if request.user.is_superuser:
+        if user.is_superuser:
             return True
 
-        return (
-            hasattr(request.user, "perfil")
-            and request.user.perfil.tipo == "admin"
-        )
+        perfil = getattr(user, "perfil", None)
+
+        return perfil is not None and perfil.tipo == "admin"
+    
