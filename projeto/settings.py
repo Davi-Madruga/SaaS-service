@@ -83,7 +83,7 @@ WSGI_APPLICATION = 'projeto.wsgi.application'
 
 POSTGRES_DB = "barbearia_db"
 POSTGRES_USER = "postgres"
-POSTGRES_PASSWORD = "123"
+POSTGRES_PASSWORD = "admin"
 POSTGRES_HOST = "localhost"
 POSTGRES_PORT = "5432"
 
