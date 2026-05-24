@@ -3,7 +3,7 @@ from .serializers import CadastroClienteSerializer, PerfilSerializer, CadastroUs
 from rest_framework.permissions import AllowAny
 from rest_framework.permissions import IsAuthenticated
 from .models import Perfil
-from barbearia.permissions import IsAdmin
+from apps.barbearia.permissions import IsAdmin
 
 class CadastroClienteViewSet(mixins.CreateModelMixin, viewsets.GenericViewSet):
     serializer_class = CadastroClienteSerializer
