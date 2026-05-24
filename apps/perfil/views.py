@@ -19,5 +19,5 @@ mixins.RetrieveModelMixin,viewsets.GenericViewSet):
 
         if perfil.tipo == 'admin':
             return Perfil.objects.all()
-        
+
         return Perfil.objects.filter(user=self.request.user)

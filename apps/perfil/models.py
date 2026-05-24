@@ -67,8 +67,8 @@ class Perfil(models.Model):
     criado_em = models.DateTimeField(auto_now_add=True)
 
     class Meta:
-        verbose_name = 'Perfil'
-        verbose_name_plural = 'Perfis'
+        verbose_name = 'perfil'
+        verbose_name_plural = 'perfis'
 
     def __str__(self):
         return f"{self.nome} ({self.tipo})"

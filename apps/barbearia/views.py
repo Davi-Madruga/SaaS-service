@@ -8,7 +8,6 @@ from rest_framework.exceptions import PermissionDenied
 class ServicoViewSet(viewsets.ModelViewSet):
     queryset = Servico.objects.all()
     serializer_class = ServicoSerializer
-    permission_classes = [IsAuthenticated]
 
     def get_permissions(self):
         if self.request.method in SAFE_METHODS:
