@@ -1,8 +1,9 @@
 from rest_framework import viewsets, mixins
-from .serializers import CadastroClienteSerializer, PerfilSerializer
+from .serializers import CadastroClienteSerializer, PerfilSerializer, CadastroUsuarioAdminSerializer
 from rest_framework.permissions import AllowAny
 from rest_framework.permissions import IsAuthenticated
 from .models import Perfil
+from barbearia.permissions import IsAdmin
 
 class CadastroClienteViewSet(mixins.CreateModelMixin, viewsets.GenericViewSet):
     serializer_class = CadastroClienteSerializer
@@ -21,3 +22,7 @@ mixins.RetrieveModelMixin,viewsets.GenericViewSet):
             return Perfil.objects.all()
 
         return Perfil.objects.filter(user=self.request.user)
+    
+class CadastroUsuarioAdminViewSet(mixins.CreateModelMixin, viewsets.GenericViewSet):
+    serializer_class = CadastroUsuarioAdminSerializer
+    permission_classes = [IsAuthenticated,IsAdmin]
