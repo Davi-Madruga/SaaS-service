@@ -14,10 +14,12 @@ class PerfilSerializer(serializers.ModelSerializer):
         read_only_fields = ["id", "email", "tipo"]
 
 class CadastroClienteSerializer(serializers.Serializer):
+    id = serializers.IntegerField(read_only=True)
     nome = serializers.CharField()
     telefone = serializers.CharField()
     email = serializers.EmailField()
     password = serializers.CharField(write_only=True)    
+    tipo = serializers.CharField(read_only=True)
 
     def validate_email(self, value):
         email = value.strip().lower()
@@ -50,6 +52,7 @@ class CadastroClienteSerializer(serializers.Serializer):
         }
 
 class CadastroUsuarioAdminSerializer(serializers.Serializer):
+    id = serializers.IntegerField(read_only=True)
     nome = serializers.CharField()
     telefone = serializers.CharField()
     email = serializers.EmailField()
