@@ -48,3 +48,43 @@ class CadastroClienteSerializer(serializers.Serializer):
             'tipo': perfil.tipo,
             'email': user.email
         }
+
+class CadastroUsuarioAdminSerializer(serializers.Serializer):
+    nome = serializers.CharField()
+    telefone = serializers.CharField()
+    email = serializers.EmailField()
+    password = serializers.CharField(write_only=True)    
+    tipo = serializers.ChoiceField(choices=[
+        ("barbeiro","Barbeiro"),
+        ("cliente","Cliente"),
+    ])
+
+    def validate_email(self, value):
+        email = value.strip().lower()
+
+        if User.objects.filter(email=email).exists():
+            raise serializers.ValidationError("Não foi possível realizar o cadastro")
+
+        return email
+
+    @transaction.atomic
+    def create(self, validated_data):
+        user = User.objects.create_user(
+            email = validated_data['email'],
+            password = validated_data['password']
+        )
+
+        perfil = Perfil.objects.create(
+            user = user,
+            nome = validated_data['nome'],
+            telefone = validated_data['telefone'],
+            tipo = validated_data['tipo']
+        )
+
+        return {
+            'id': perfil.id,
+            'nome': perfil.nome,
+            'telefone': perfil.telefone,
+            'tipo': perfil.tipo,
+            'email': user.email
+        }
