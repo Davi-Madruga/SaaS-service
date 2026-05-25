@@ -26,3 +26,11 @@ mixins.RetrieveModelMixin,viewsets.GenericViewSet):
 class CadastroUsuarioAdminViewSet(mixins.CreateModelMixin, viewsets.GenericViewSet):
     serializer_class = CadastroUsuarioAdminSerializer
     permission_classes = [IsAuthenticated,IsAdmin]
+
+class BarbeiroViewSet(mixins.ListModelMixin, viewsets.GenericViewSet):
+    serializer_class = PerfilSerializer
+    permission_classes = [IsAuthenticated]
+
+    def get_queryset(self):
+        return Perfil.objects.filter(tipo='barbeiro')
+        
