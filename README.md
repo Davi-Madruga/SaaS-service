@@ -1,48 +1,21 @@
-# API — SaaS de Barbearia
+# API Backend - Sistema de Barbearia
 
-API REST desenvolvida com Django REST Framework para um sistema SaaS de barbearia. O projeto permite o cadastro de clientes, autenticação com JWT, gerenciamento de serviços e controle de agendamentos entre clientes e barbeiros.
+API desenvolvida para o sistema de barbearia, responsável por gerenciar usuários, perfis, serviços e agendamentos.
 
-A aplicação utiliza autenticação via JSON Web Token, com geração de access token e refresh token. As rotas protegidas exigem o envio do token no header `Authorization: Bearer <access_token>`.
+O backend foi desenvolvido com **Python**, **Django** e **Django REST Framework**, utilizando autenticação via **JWT**. A API permite cadastro de clientes, login, gerenciamento de barbeiros, serviços e controle de agendamentos.
 
 ## Principais funcionalidades
 
 - Cadastro de clientes
 - Login com JWT
-- Renovação de token com refresh token
-- Listagem de serviços disponíveis
-- CRUD de serviços restrito a usuários administradores
-- Criação de agendamentos por clientes
-- Listagem de agendamentos conforme o perfil do usuário autenticado
-- Controle de permissões para cliente, barbeiro e admin
-- Validação de dados nos serializers
-- Tratamento de erros HTTP como 400, 401, 403 e 404
-
-## Entidades principais
-
-- Usuário
-- Perfil
-- Serviço
-- Agendamento
-
-## Perfis do sistema
-
-O sistema trabalha com três tipos de perfil:
-
-- `cliente`: pode criar e visualizar seus próprios agendamentos.
-- `barbeiro`: pode visualizar os agendamentos em que está associado como barbeiro.
-- `admin`: pode gerenciar serviços e visualizar os agendamentos do sistema.
-
-## Endpoints principais
-
-- `POST /api/registro/` — cadastro de cliente
-- `POST /api/token/` — login e geração dos tokens JWT
-- `POST /api/token/refresh/` — renovação do access token
-- `GET /api/servicos/` — listagem de serviços
-- `POST /api/servicos/` — criação de serviço por admin
-- `PUT/PATCH/DELETE /api/servicos/{id}/` — gerenciamento de serviços por admin
-- `GET /api/agendamentos/` — listagem de agendamentos conforme o perfil logado
-- `POST /api/agendamentos/` — criação de agendamento por cliente
-- `PUT/PATCH/DELETE /api/agendamentos/{id}/` — atualização ou remoção de agendamentos permitidos ao usuário
+- Gerenciamento de perfis
+- Cadastro de barbeiros pelo admin
+- Cadastro e gerenciamento de serviços
+- Criação e controle de agendamentos
+- Controle de permissões por tipo de usuário:
+  - Admin
+  - Barbeiro
+  - Cliente
 
 ## Tecnologias utilizadas
 
@@ -50,9 +23,136 @@ O sistema trabalha com três tipos de perfil:
 - Django
 - Django REST Framework
 - Simple JWT
-- SQLite/PostgreSQL
-- Django Admin
+- PostgreSQL ou SQLite
+- Docker
 
-## Objetivo do projeto
+---
 
-Este backend foi desenvolvido para servir como base de uma aplicação de barbearia, permitindo a integração com um front-end moderno e oferecendo uma estrutura inicial para autenticação, permissões, serviços e agendamentos.
+## Como rodar o projeto normalmente
+
+### 1. Clonar o repositório
+
+```bash
+git clone URL_DO_REPOSITORIO
+cd NOME_DO_PROJETO
+```
+
+### 2. Criar e ativar o ambiente virtual
+
+No Windows:
+
+```bash
+python -m venv venv
+venv\Scripts\activate
+```
+
+No Linux/Mac:
+
+```bash
+python3 -m venv venv
+source venv/bin/activate
+```
+
+### 3. Instalar as dependências
+
+```bash
+pip install -r requirements.txt
+```
+
+### 4. Rodar as migrações
+
+```bash
+python manage.py makemigrations
+python manage.py migrate
+```
+
+### 5. Criar um superusuário
+
+```bash
+python manage.py createsuperuser
+```
+
+### 6. Rodar o servidor
+
+```bash
+python manage.py runserver
+```
+
+A API ficará disponível em:
+
+```txt
+http://127.0.0.1:8000/
+```
+
+---
+
+## Como rodar com Docker
+
+### 1. Subir os containers
+
+```bash
+docker compose up --build
+```
+
+ou, dependendo da versão do Docker:
+
+```bash
+docker-compose up --build
+```
+
+### 2. Rodar as migrações dentro do container
+
+Se o serviço do backend no `docker-compose.yml` se chamar `web`:
+
+```bash
+docker compose exec web python manage.py migrate
+```
+
+Se o serviço tiver outro nome, substitua `web` pelo nome correto.
+
+### 3. Criar um superusuário dentro do container
+
+```bash
+docker compose exec web python manage.py createsuperuser
+```
+
+### 4. Acessar a API
+
+```txt
+http://localhost:8000/
+```
+
+---
+
+## Endpoints principais
+
+```txt
+POST /api/token/
+POST /api/token/refresh/
+
+POST /api/clientes/
+POST /api/usuarios/
+GET  /api/perfis/
+
+GET  /api/servicos/
+POST /api/servicos/
+
+GET  /api/agendamentos/
+POST /api/agendamentos/
+```
+
+---
+
+## Autenticação
+
+Para acessar rotas protegidas, envie o token JWT no header da requisição:
+
+```http
+Authorization: Bearer SEU_TOKEN
+```
+
+---
+
+## Observação
+
+As configurações de banco de dados, variáveis de ambiente e Docker podem variar conforme o ambiente de execução do projeto.
